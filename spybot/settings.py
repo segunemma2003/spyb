@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #installed app
-    'djangorestframework',
+    'rest_framework',
+     'rest_framework.authtoken',
+    'djoser',
+    'corsheaders',
     # local apps
     'facebook',
     'tiktok',
@@ -57,6 +60,22 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'spybot.urls'
+SITE_ID = 1
+
+DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'SERIALIZERS': {},
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        (...)
+    ),
+}
 
 TEMPLATES = [
     {
@@ -76,7 +95,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'spybot.wsgi.application'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIAFILES_DIRS = (os.path.join(BASE_DIR, "media"),)
+MEDIA_URL = '/media/'
+SEND_EMAIL_VERIFICATION = False
 
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+DISABLE_COLLECTSTATIC = 1
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -87,6 +126,8 @@ DATABASES = {
     }
 }
 
+
+AUTH_USER_MODEL = 'mainapp.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
